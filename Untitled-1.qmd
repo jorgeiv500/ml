@@ -1,0 +1,197 @@
+---
+title: "Semana 9: Machine Learning"
+author: "Jorge Iván Romero Gelvez"
+format:
+  revealjs:
+    transition: slide
+    logo: arcos_19.jpg
+    footer: "INTELIGENCIA ARTIFICIAL (702304-1-1S-2025)"
+    chalkboard: true
+    bibliography: references.bib
+jupyter: python3
+---
+
+# Introducción al Machine Learning
+
+
+## Objetivos de aprendizaje
+- Definir el aprendizaje automático
+- Definir el aprendizaje supervisado
+- Definir el aprendizaje no supervisado
+- Definir un modelo de regresión
+- Definir un modelo de clasificación
+
+
+
+## ¿Que es el aprendizaje automático?
+::: {.fragment .blur}
+> "El aprendizaje automático es el campo de estudio que otorga a las computadoras la capacidad de aprender sin ser programadas explícitamente."
+
+-- *Arthur Samuel, 1959* [@samuel1959]
+:::
+::: {.fragment .columns .center}
+::: {.column width="50%"}
+![Arthur Samuel y su programa de damas](https://i.blogs.es/589df8/650_1000_us__en_us__ibm100__700_series__checkers__620x350/1366_2000.webp)
+:::
+:::
+
+##  Definición de Aprendizaje Automático
+
+> "El aprendizaje automático es un campo de la inteligencia artificial que permite a las computadoras aprender de los datos sin ser programadas explícitamente. Según *Artificial Intelligence: A Modern Approach* de Russell y Norvig, el aprendizaje automático es fundamental en el desarrollo de sistemas autónomos e inteligentes. Por otro lado, *An Introduction to Statistical Learning* enfatiza la importancia de los modelos estadísticos en la inferencia y predicción." [@russell2010; @james2013]
+
+## Casos de Uso en Aprendizaje Automático {background-iframe="https://insights.daffodilsw.com/blog/machine-learning-examples-from-day-to-day-life"}
+
+
+
+
+
+## Tipos de aprendizaje automático
+
+- Aprendizaje supervizado
+- Aprendizaje no supervizado
+- Aprendizaje por refuerzo
+ 
+## Ejemplos de Aplicaciones de Aprendizaje Automático {.scrollable}
+
+| **Entrada (X)**             | **Salida (Y)**                     | **Aplicación**             |
+|-----------------------------|-----------------------------------|----------------------------|
+| correo electrónico          | ¿spam? (0/1)                      | filtrado de spam          |
+| audio                       | transcripción de texto           | reconocimiento de voz      |
+| inglés                      | español                           | traducción automática      |
+| anuncio, información del usuario | ¿clic? (0/1)               | publicidad en línea       |
+| imagen, información de radar | posición de otros autos         | conducción autónoma       |
+| imagen de un teléfono       | ¿defecto? (0/1)                  | inspección visual         |
+
+## Predicción de Precios de Vivienda{.scrollable}
+![Ejemplo casas](casas.png)
+
+::: {.fragment .columns .center}
+- **Regresión Lineal**: Ajusta una línea recta para modelar la relación entre el tamaño de la casa y su precio.
+:::
+::: {.fragment .columns .center}
+- **Regresión Polinomial**: Ajusta una curva más compleja para capturar relaciones no lineales en los datos.
+::: 
+
+
+
+## Comparación de Modelos
+
+| **Modelo**             | **Descripción**                                              | **Ventajas**                                         | **Desventajas**                                      |
+|------------------------|--------------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
+| Regresión Lineal       | Ajusta una línea recta a los datos                           | Simple, fácil de interpretar                        | No captura relaciones no lineales                    |
+| Regresión Polinomial   | Ajusta una curva polinómica para una mejor aproximación     | Captura relaciones más complejas                    | Puede sobreajustar si el grado del polinomio es alto |
+
+---
+
+# Regresión Lineal con una Variable{: .scrollable .center}
+
+Según *An Introduction to Statistical Learning*, la regresión lineal es el modelo base en Machine Learning y se define como:
+
+$$ f_{w,b}(x) = wx + b $$
+
+```{mermaid}
+graph LR;
+  X[Entrada: Tamaño de casa] -->|Modelo| Y[Salida: Precio de casa];
+```
+
+## Implementación en Python
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+X = np.array([[400], [2104], [1416], [1534], [852]])
+y = np.array([232, 460, 315, 178, 232])
+
+model = LinearRegression()
+model.fit(X, y)
+
+plt.scatter(X, y, color="blue", label="Datos reales")
+plt.plot(X, model.predict(X), color="red", label="Regresión lineal")
+plt.xlabel("Tamaño de la casa (pies cuadrados)")
+plt.ylabel("Precio ($1000s)")
+plt.legend()
+plt.show()
+```
+##
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQbDzDaUKWNk6UrIcNL1ynwNzzflWLw7-IUVW-KUpKwzn9kAEdU7lsL39xUE2mweVRkwT3VIYM6-79E/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+##
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTLSPU3eZh-rEdd6IrkFMVrhGIaH9AKdpWLEj-f-NdyaSWDrmFuaOttLKWq7vExfMqGk-v5jz2FYx_L/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+
+
+## Regresión Lineal con Múltiples Variables
+
+La regresión lineal con múltiples variables se expresa como:
+
+$$ f_{w,b}(x) = w_1x_1 + w_2x_2 + \dots + w_nx_n + b $$
+
+```{mermaid}
+graph LR;
+  X1[Superficie] -->|Modelo| Y[Precio];
+  X2[Número de habitaciones] -->|Modelo| Y;
+  X3[Antigüedad] -->|Modelo| Y;
+```
+
+## Implementación en Python
+```{python}
+X_multi = np.array([[2104, 5, 1, 45], [1416, 3, 2, 40], [1534, 3, 2, 30], [852, 2, 1, 36]])
+y_multi = np.array([460, 232, 315, 178])
+
+model_multi = LinearRegression()
+model_multi.fit(X_multi, y_multi)
+
+print("Coeficientes:", model_multi.coef_)
+print("Intercepto:", model_multi.intercept_)
+```
+
+
+## Clasificación con Regresión Logística
+
+Russell y Norvig destacan la regresión logística como una técnica clave en inteligencia artificial. Su ecuación es:
+
+$$ g(z) = \frac{1}{1+e^{-z}} $$
+
+```{mermaid}
+graph LR;
+  A[Entrada: Característica] -->|Función Sigmoide| B[Probabilidad];
+  B -->|Si P mayor que 0.5| C[Clase 1];
+  B -->|Si P menor que 0.5| D[Clase 0];
+```
+
+
+## Regularización en Machine Learning
+
+Para evitar sobreajuste, *An Introduction to Statistical Learning* recomienda:
+
+- **L1 (Lasso)**: Reduce coeficientes a cero, favoreciendo la selección de características.
+- **L2 (Ridge)**: Disminuye la varianza del modelo penalizando coeficientes grandes.
+
+## Regresión Ridge vs. Lasso
+
+- **Regresión Ridge (L2 Regularización)**: Reduce los coeficientes pero nunca los hace exactamente **cero**.
+- **Regresión Lasso (L1 Regularización)**: Puede hacer que algunos coeficientes sean exactamente **cero**, eliminando características irrelevantes.
+
+
+
+
+## Diferencias Clave
+
+| **Característica**  | **Regresión Ridge** | **Regresión Lasso** |
+|---------------------|--------------------|---------------------|
+| **Tipo de Regularización** | L2 (\(\sum \beta^2\)) | L1 (\(\sum |\beta|\)) |
+| **Coeficientes pueden ser 0** | ❌ No | ✅ Sí (selección de variables) |
+| **Evita sobreajuste** | ✅ Sí | ✅ Sí, pero con selección de características |
+| **Útil cuando...** | Todas las variables son relevantes | Algunas variables pueden ser eliminadas |
+
+---
+
+## Cuando usar cada una
+
+- **Ridge** se usa cuando queremos reducir la magnitud de los coeficientes sin eliminarlos.
+- **Lasso** es útil cuando queremos una selección automática de características eliminando coeficientes irrelevantes.
+
+
+## referencias
+
